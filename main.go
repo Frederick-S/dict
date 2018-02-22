@@ -6,6 +6,12 @@ import (
 )
 
 func print(word Word) {
+	if len(word.explanations) == 0 {
+		fmt.Println("No results found")
+
+		os.Exit(0)
+	}
+
 	for _, explanation := range word.explanations {
 		fmt.Println(explanation)
 	}
