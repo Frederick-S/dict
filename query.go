@@ -6,6 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 
 	"net/http"
+	"strings"
 )
 
 func query(name string) Word {
@@ -28,15 +29,23 @@ func query(name string) Word {
 		log.Fatal(err)
 	}
 
-	var explanations []string = nil
-
-	document.Find(".wordbook-js + .trans-container ul li").Each(func(i int, selection *goquery.Selection) {
-		explanations = append(explanations, selection.Text())
-	})
-
 	word := Word{
 		name:         name,
-		explanations: explanations,
+		explanations: []string{},
+		suggestions:  []string{},
+	}
+
+	document.Find(".wordbook-js + .trans-container ul li").Each(func(_ int, selection *goquery.Selection) {
+		word.explanations = append(word.explanations, selection.Text())
+	})
+
+	if len(word.explanations) == 0 {
+		document.Find(".typo-rel").Each(func(_ int, selection *goquery.Selection) {
+			suggestion := strings.Replace(selection.Text(), " ", "", -1)
+			suggestion = strings.Replace(suggestion, "\n", "", -1)
+
+			word.suggestions = append(word.suggestions, suggestion)
+		})
 	}
 
 	return word

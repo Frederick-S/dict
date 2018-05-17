@@ -7,9 +7,17 @@ import (
 
 func display(word Word) {
 	if len(word.explanations) == 0 {
-		fmt.Println("No results found")
+		if len(word.suggestions) == 0 {
+			fmt.Println("No results found")
 
-		os.Exit(0)
+			os.Exit(0)
+		} else {
+			fmt.Println("Are you looking for:")
+
+			for _, suggestion := range word.suggestions {
+				fmt.Println(suggestion)
+			}
+		}
 	}
 
 	for _, explanation := range word.explanations {
