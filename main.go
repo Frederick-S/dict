@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func print(word Word) {
+func display(word Word) {
 	if len(word.explanations) == 0 {
 		fmt.Println("No results found")
 
@@ -28,5 +28,5 @@ func main() {
 
 	word := query(arguments[0])
 
-	print(word)
+	display(word)
 }
